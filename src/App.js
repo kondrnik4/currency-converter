@@ -5,7 +5,6 @@ import axios from "axios"
 function App() {
 
     const API_KEY = "153244c6906422656a4f";
-    const API_KEY_FIXER = "c4d905ebf5adf697aa4f75772badab0e";
     const baseUrl = "https://free.currconv.com";
 
 
@@ -17,17 +16,17 @@ function App() {
     const [currencies, setCurrencies] = React.useState([]);
 
 
+
     let requests = {
         fetchValue: baseUrl + `/api/v7/convert?q=${valueFr}_${valueTo}&compact=ultra&apiKey=${API_KEY}`,
-        fetchLatest: `http://data.fixer.io/api/latest?access_key=${API_KEY_FIXER}`
+        fetchList : baseUrl + `/api/v7/currencies?apiKey=${API_KEY}`
     };
 
 
     React.useEffect(() => {
         async function getData() {
-            let request = await axios.get(requests.fetchLatest);
-            setCurrencies(Object.keys(request.data.rates))
-
+            let request = await axios.get(requests.fetchList);
+            setCurrencies(Object.keys(request.data.results))
         }
 
         getData()
@@ -39,7 +38,6 @@ function App() {
             setCurrencyValue(request.data[Object.keys(request.data)[0]])
 
         }
-
         getValue();
     }, [valueFr, valueTo]);
 
